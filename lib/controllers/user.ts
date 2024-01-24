@@ -3,7 +3,7 @@
 import User from "../models/user";
 import { connectDB } from "../mongoose";
 
-type updateUserProps = {
+type updateUserParams = {
   id: string;
   name: string;
   username: string;
@@ -17,7 +17,7 @@ export const updateUser = async ({
   username,
   image,
   bio,
-}: updateUserProps): Promise<void> => {
+}: updateUserParams): Promise<void> => {
   try {
     connectDB();
     const user = await User.findOne({ id });
@@ -37,7 +37,7 @@ export const fetchUser = async (id: string) => {
     connectDB();
     const user = await User.findOne({ id });
     return user;
-  } catch (error) {
+  } catch (error: any) {
     throw new Error(error.message);
   }
 };

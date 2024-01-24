@@ -16,8 +16,10 @@ import {
 
 import { Textarea } from "./ui/textarea";
 import { OrganizationSwitcher } from "@clerk/nextjs";
+import { createPost } from "@/lib/controllers/post";
+import toast from "react-hot-toast";
 
-const PostForm = () => {
+const PostForm = ({ authorId }: { authorId: string }) => {
   const form = useForm<z.infer<typeof postValidation>>({
     resolver: zodResolver(postValidation),
     defaultValues: {
@@ -25,7 +27,16 @@ const PostForm = () => {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof postValidation>) {}
+  async function onSubmit(values: z.infer<typeof postValidation>) {
+    const post = await createPost({
+      text: values.post,
+      authorId,
+    });
+
+    values.post = "";
+    toast.success("Posted!");
+    console.log(post);
+  }
 
   return (
     <div className="w-full max-w-[600px]">
