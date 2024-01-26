@@ -5,11 +5,9 @@ import PostCard from "@/components/PostCard";
 export default async function Home() {
   const res = await fetchPosts({ page: 1, pageSize: 20 });
 
-  console.log(res);
-
   return (
-    <div className="text-white p-16">
-      <h1 className="text-2xl font-semibold mb-8">Home</h1>
+    <div className="p-16">
+      <h1 className="text-2xl font-semibold mb-8 text-white">Home</h1>
       <div>
         {res.length === 0 ? (
           <div>No Posts found</div>
@@ -22,6 +20,9 @@ export default async function Home() {
                   image={post.author.image}
                   username={post.author.username}
                   text={post.text}
+                  postId={post._id}
+                  userId={post.author.id}
+                  isComment={false}
                 />
               );
             })}

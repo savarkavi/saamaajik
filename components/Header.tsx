@@ -6,7 +6,7 @@ import { CiLogout } from "react-icons/ci";
 
 const Header = () => {
   return (
-    <div className="w-full bg-stone-900 h-[80px] py-4 px-2 sm:px-8 flex items-center justify-between sticky top-0 z-[99]">
+    <div className="w-full bg-neutral-900 h-[80px] py-4 px-2 sm:px-8 flex items-center justify-between sticky top-0 z-[99]">
       <div className="flex items-center gap-4 justify-between">
         <Image src="/assets/app-logo.png" alt="logo" width={28} height={28} />
         <h1 className={`text-white font-semibold text-lg `}>Saamaajik</h1>

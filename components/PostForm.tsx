@@ -4,7 +4,6 @@ import { postValidation } from "@/lib/zodSchemas/post";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { dark } from "@clerk/themes";
 
 import {
   Form,
@@ -15,7 +14,6 @@ import {
 } from "@/components/ui/form";
 
 import { Textarea } from "./ui/textarea";
-import { OrganizationSwitcher } from "@clerk/nextjs";
 import { createPost } from "@/lib/controllers/post";
 import toast from "react-hot-toast";
 
