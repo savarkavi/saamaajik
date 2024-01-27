@@ -23,9 +23,19 @@ export const updateUser = async ({
     const user = await User.findOne({ id });
 
     if (user) {
-      await User.findOneAndUpdate({ id }, { name, username, image, bio });
+      await User.findOneAndUpdate(
+        { id },
+        { name, username, image, bio, isBoarded: true }
+      );
     } else {
-      await new User({ id, name, username, image, bio }).save();
+      await new User({
+        id,
+        name,
+        username,
+        image,
+        bio,
+        isBoarded: true,
+      }).save();
     }
   } catch (error: any) {
     throw new Error(error.message);
@@ -37,6 +47,17 @@ export const fetchUser = async (id: string) => {
     connectDB();
     const user = await User.findOne({ id });
     return user;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};
+
+export const fetchUsers = async () => {
+  try {
+    connectDB();
+
+    const users = await User.find();
+    return users;
   } catch (error: any) {
     throw new Error(error.message);
   }

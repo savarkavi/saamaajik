@@ -1,9 +1,17 @@
 import { fetchPosts } from "@/lib/controllers/post";
 
 import PostCard from "@/components/PostCard";
+import { currentUser } from "@clerk/nextjs";
+import { fetchUser } from "@/lib/controllers/user";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
   const res = await fetchPosts({ page: 1, pageSize: 20 });
+  const user = await currentUser();
+  if (!user) return null;
+
+  const userInfo = await fetchUser(user.id);
+  if (!userInfo?.isBoarded) redirect("/onboarding");
 
   return (
     <div className="p-16">
@@ -22,6 +30,7 @@ export default async function Home() {
                   text={post.text}
                   postId={post._id}
                   userId={post.author.id}
+                  likes={post.likes}
                   isComment={false}
                 />
               );

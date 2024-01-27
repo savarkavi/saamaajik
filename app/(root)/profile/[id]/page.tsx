@@ -5,8 +5,16 @@ import { AiFillMessage } from "react-icons/ai";
 import { IoPeopleSharp } from "react-icons/io5";
 import { FaTag } from "react-icons/fa";
 import TabContent from "@/components/TabContent";
+import { currentUser } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
 
 const Profile = async ({ params }: { params: { id: string } }) => {
+  const user = await currentUser();
+  if (!user) return null;
+
+  const loggedInUser = await fetchUser(user.id);
+  if (!loggedInUser?.isBoarded) redirect("/onboarding");
+
   const userData = await fetchUser(params.id);
 
   const userInfo = {

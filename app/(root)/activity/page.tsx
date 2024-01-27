@@ -1,9 +1,8 @@
-import PostForm from "@/components/PostForm";
 import { fetchUser } from "@/lib/controllers/user";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
-async function CreatePost() {
+const Activity = async () => {
   const user = await currentUser();
   if (!user) return null;
 
@@ -11,11 +10,10 @@ async function CreatePost() {
   if (!userInfo?.isBoarded) redirect("/onboarding");
 
   return (
-    <div className="text-white p-16">
-      <h1 className="text-2xl font-semibold mb-8">Create Post</h1>
-      <PostForm authorId={userInfo?._id} />
+    <div className="p-16">
+      <h1 className="text-white text-2xl font-semibold">Activity</h1>
     </div>
   );
-}
+};
 
-export default CreatePost;
+export default Activity;

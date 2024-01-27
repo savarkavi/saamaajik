@@ -17,6 +17,10 @@ const userSchema = new mongoose.Schema(
     },
     image: String,
     bio: String,
+    isBoarded: {
+      type: Boolean,
+      default: false,
+    },
     posts: [
       {
         type: mongoose.Schema.Types.ObjectId,

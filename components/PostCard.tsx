@@ -3,6 +3,9 @@ import { CiHeart, CiLocationArrow1 } from "react-icons/ci";
 import { AiOutlineMessage } from "react-icons/ai";
 import { TiArrowForwardOutline } from "react-icons/ti";
 import Link from "next/link";
+import { likePost } from "@/lib/controllers/post";
+import { currentUser } from "@clerk/nextjs";
+import LikePost from "./LikePost";
 
 type PostCardProps = {
   image: string;
@@ -10,17 +13,26 @@ type PostCardProps = {
   text: string;
   postId: string;
   userId: string;
+  likes: string[];
   isComment: boolean;
 };
 
-const PostCard = ({
+const PostCard = async ({
   image,
   username,
   text,
   postId,
   isComment,
   userId,
+  likes,
 }: PostCardProps) => {
+  const user = await currentUser();
+  if (!user) return null;
+
+  const handleLikePost = async () => {
+    await likePost({ postId, userId: user.id });
+  };
+
   return (
     <div
       className={`rounded-xl w-full max-w-[800px] flex gap-6 text-white ${
@@ -48,8 +60,8 @@ const PostCard = ({
           </Link>
           <p>{text}</p>
         </div>
-        <div className="flex items-center text-stone-500 gap-4 mt-6">
-          <CiHeart className="text-xl cursor-pointer" />
+        <div className="flex items-center text-white gap-12 mt-6">
+          <LikePost likes={likes} onClick={handleLikePost} />
           <Link href={`/post/${postId}`}>
             <AiOutlineMessage className="text-xl cursor-pointer" />
           </Link>

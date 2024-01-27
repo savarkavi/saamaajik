@@ -3,13 +3,14 @@ import PostCard from "@/components/PostCard";
 import { fetchPost } from "@/lib/controllers/post";
 import { fetchUser } from "@/lib/controllers/user";
 import { currentUser } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
 
 const Post = async ({ params }: { params: { id: string } }) => {
   const user = await currentUser();
   if (!user) return null;
 
   const userInfo = await fetchUser(user.id);
-  console.log(userInfo);
+  if (!userInfo?.isBoarded) redirect("/onboarding");
 
   const res = await fetchPost(params.id);
   const profileImage = userInfo ? userInfo.image : user.imageUrl;

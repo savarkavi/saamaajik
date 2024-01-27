@@ -25,8 +25,9 @@ const TabContent = async ({ userId, tabType }: TabProps) => {
               image={post.author.image}
               username={post.author.username}
               text={post.text}
-              postId={JSON.stringify(post._id)}
+              postId={post._id}
               userId={post.author.id}
+              likes={post.likes}
               isComment={false}
             />
           );

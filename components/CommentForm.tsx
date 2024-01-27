@@ -59,13 +59,14 @@ const CommentForm = ({
             render={({ field }) => (
               <FormItem className="flex items-center gap-2 border-y border-gray-600">
                 <FormLabel>
-                  <Image
-                    src={profileImage}
-                    alt="profile image"
-                    width={64}
-                    height={64}
-                    className="rounded-full"
-                  />
+                  <div className="relative w-12 h-12 rounded-full">
+                    <Image
+                      src={profileImage}
+                      alt="profile image"
+                      fill
+                      className="rounded-full object-cover"
+                    />
+                  </div>
                 </FormLabel>
                 <FormControl>
                   <Input

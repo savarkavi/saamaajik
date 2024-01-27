@@ -15,6 +15,11 @@ type addCommentParams = {
   parentId: string;
 };
 
+type likePostParams = {
+  postId: string;
+  userId: string;
+};
+
 export const createPost = async ({ text, authorId }: createPostParams) => {
   try {
     connectDB();
@@ -101,6 +106,20 @@ export const addComment = async ({
 
     parentPost.children.push(comment._id);
     await parentPost.save();
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};
+
+export const likePost = async ({ postId, userId }: likePostParams) => {
+  try {
+    connectDB();
+    const user = await User.findOne({ id: userId });
+    const post = await Post.findByIdAndUpdate(postId, {
+      $push: { likes: user._id },
+    });
+
+    return post;
   } catch (error: any) {
     throw new Error(error.message);
   }
