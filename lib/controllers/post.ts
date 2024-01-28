@@ -114,12 +114,24 @@ export const addComment = async ({
 export const likePost = async ({ postId, userId }: likePostParams) => {
   try {
     connectDB();
-    const user = await User.findOne({ id: userId });
-    const post = await Post.findByIdAndUpdate(postId, {
-      $push: { likes: user._id },
-    });
 
-    return post;
+    const post = await Post.findById(postId);
+
+    if (post.likes.includes(userId)) {
+      const updatedPost = await Post.findByIdAndUpdate(
+        postId,
+        { $pull: { likes: userId } },
+        { new: true }
+      );
+      return updatedPost;
+    } else {
+      const updatedPost = await Post.findByIdAndUpdate(
+        postId,
+        { $push: { likes: userId } },
+        { new: true }
+      );
+      return updatedPost;
+    }
   } catch (error: any) {
     throw new Error(error.message);
   }
