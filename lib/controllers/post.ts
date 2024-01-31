@@ -16,8 +16,8 @@ type addCommentParams = {
 };
 
 type likePostParams = {
-  postId: string;
   userId: string;
+  postId: string;
 };
 
 export const createPost = async ({ text, authorId }: createPostParams) => {
@@ -111,27 +111,58 @@ export const addComment = async ({
   }
 };
 
-export const likePost = async ({ postId, userId }: likePostParams) => {
+// export const likePost = async ({ postId, userId }: likePostParams) => {
+//   try {
+//     connectDB();
+
+//     const post = await Post.findById(postId);
+
+//     if (
+//       post.likesData.map(
+//         (likeData: { user: string; postId: string }) => likeData.user === userId
+//       )
+//     ) {
+//       const updatedPost = await Post.findByIdAndUpdate(
+//         postId,
+//         { $pull: { likesData: { user: userId, post: postId } } },
+//         { new: true }
+//       );
+//       return updatedPost;
+//     } else {
+//       const updatedPost = await Post.findByIdAndUpdate(
+//         postId,
+//         { $push: { likesData: { user: userId, post: postId } } },
+//         { new: true }
+//       );
+//       return updatedPost;
+//     }
+//   } catch (error: any) {
+//     throw new Error(error.message);
+//   }
+// };
+
+export const fetchActivity = async (id: string) => {
   try {
     connectDB();
+    const userPosts = await Post.find({ author: id })
+      .populate({
+        path: "children",
+        populate: { path: "author" },
+      })
+      .populate({ path: "likesData" });
 
-    const post = await Post.findById(postId);
+    const commentsData = userPosts.flatMap((post) => post.children);
+    const likesData = userPosts.flatMap((post) => post.likes);
 
-    if (post.likes.includes(userId)) {
-      const updatedPost = await Post.findByIdAndUpdate(
-        postId,
-        { $pull: { likes: userId } },
-        { new: true }
-      );
-      return updatedPost;
-    } else {
-      const updatedPost = await Post.findByIdAndUpdate(
-        postId,
-        { $push: { likes: userId } },
-        { new: true }
-      );
-      return updatedPost;
-    }
+    return { commentsData, likesData };
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};
+
+export const fetchLikesACtivity = async (id: string) => {
+  try {
+    connectDB();
   } catch (error: any) {
     throw new Error(error.message);
   }

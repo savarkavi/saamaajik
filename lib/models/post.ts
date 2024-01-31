@@ -25,9 +25,9 @@ const postSchema = new mongoose.Schema(
         ref: "Post",
       },
     ],
-    likes: {
-      type: Array,
-      default: [],
+    totalLikes: {
+      type: Number,
+      default: 0,
     },
   },
   { timestamps: true }

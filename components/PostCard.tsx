@@ -5,7 +5,12 @@ import { TiArrowForwardOutline } from "react-icons/ti";
 import Link from "next/link";
 import { currentUser } from "@clerk/nextjs";
 import LikePost from "./LikePost";
-import { fetchPost } from "@/lib/controllers/post";
+import { fetchUser } from "@/lib/controllers/user";
+
+type Like = {
+  user: string;
+  post: string;
+};
 
 type PostCardProps = {
   image: string;
@@ -13,8 +18,8 @@ type PostCardProps = {
   text: string;
   postId: string;
   userId: string;
-  likes: string[];
   isComment: boolean;
+  likesCount: Number;
 };
 
 const PostCard = async ({
@@ -24,10 +29,12 @@ const PostCard = async ({
   postId,
   isComment,
   userId,
-  likes,
+  likesCount,
 }: PostCardProps) => {
   const user = await currentUser();
   if (!user) return null;
+
+  const userInfo = await fetchUser(user.id);
 
   return (
     <div
@@ -58,11 +65,11 @@ const PostCard = async ({
         </div>
         <div className="flex items-center text-white gap-12 mt-6">
           <LikePost
-            likes={JSON.stringify(likes)}
-            postId={JSON.stringify(postId)}
-            userId={JSON.stringify(user.id)}
+            postId={postId}
+            userId={JSON.stringify(userInfo._id)}
+            likesCount={likesCount}
           />
-          <Link href={`/post/${postId}`}>
+          <Link href={`/post/${JSON.parse(postId)}`}>
             <AiOutlineMessage className="text-xl cursor-pointer" />
           </Link>
           <TiArrowForwardOutline className="text-xl cursor-pointer" />

@@ -28,10 +28,10 @@ export default async function Home() {
                   image={post.author.image}
                   username={post.author.username}
                   text={post.text}
-                  postId={post._id}
+                  postId={JSON.stringify(post._id)}
                   userId={post.author.id}
-                  likes={post.likes}
                   isComment={false}
+                  likesCount={post.totalLikes}
                 />
               );
             })}

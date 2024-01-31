@@ -18,10 +18,10 @@ const Profile = async ({ params }: { params: { id: string } }) => {
   const userData = await fetchUser(params.id);
 
   const userInfo = {
-    image: userData.image,
-    name: userData.name,
-    username: userData.username,
-    bio: userData.bio,
+    image: userData?.image,
+    name: userData?.name,
+    username: userData?.username,
+    bio: userData?.bio,
   };
 
   return (

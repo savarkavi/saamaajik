@@ -13,6 +13,7 @@ const Post = async ({ params }: { params: { id: string } }) => {
   if (!userInfo?.isBoarded) redirect("/onboarding");
 
   const res = await fetchPost(params.id);
+  const replies = res.children.reverse();
   const profileImage = userInfo ? userInfo.image : user.imageUrl;
 
   return (
@@ -31,7 +32,7 @@ const Post = async ({ params }: { params: { id: string } }) => {
         parentId={JSON.stringify(res._id)}
       />
       <div className="flex flex-col">
-        {res.children.map((comment: any) => {
+        {replies.map((comment: any) => {
           return (
             <PostCard
               key={comment._id}

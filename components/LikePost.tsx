@@ -1,46 +1,66 @@
 "use client";
 
-import { likePost } from "@/lib/controllers/post";
+import { getLikesData, likePost } from "@/lib/controllers/like";
 import React, { useEffect, useState } from "react";
-import { CiHeart } from "react-icons/ci";
+import { IoMdHeartEmpty, IoMdHeart } from "react-icons/io";
+
+type LikesParams = {
+  user: string;
+  post: string;
+};
 
 const LikePost = ({
-  likes,
   postId,
   userId,
+  likesCount,
 }: {
-  likes: string;
   postId: string;
   userId: string;
+  likesCount: number;
 }) => {
   const [isLiked, setIsLiked] = useState(false);
+  const [likesData, setLikesData] = useState<LikesParams[]>([]);
 
   useEffect(() => {
-    if (likes.includes(userId)) {
-      setIsLiked(true);
-    }
-  }, [likes, userId]);
+    const fetchLikesData = async () => {
+      const res = await getLikesData();
+
+      console.log(res);
+
+      if (res && res?.length > 0) {
+        setLikesData(res);
+      }
+    };
+
+    fetchLikesData();
+  }, [postId]);
+
+  console.log(postId);
+
+  console.log(likesData.filter((like) => like.post !== postId));
 
   const handleLikePost = async () => {
     const res = await likePost({
-      postId: JSON.parse(postId),
       userId: JSON.parse(userId),
+      postId: JSON.parse(postId),
     });
-
-    if (res.likes.includes(userId)) {
-      setIsLiked(true);
-    } else {
-      setIsLiked(false);
-    }
+    console.log(res);
   };
 
   return (
     <div className="flex items-center gap-2">
-      <CiHeart
-        className={`text-xl cursor-pointer ${isLiked && "bg-blue-500"}`}
-        onClick={handleLikePost}
-      />
-      <span className="text-sm">{JSON.parse(likes)?.length}</span>
+      {!isLiked ? (
+        <IoMdHeartEmpty
+          className={`text-xl cursor-pointer`}
+          onClick={handleLikePost}
+        />
+      ) : (
+        <IoMdHeart
+          className={`text-xl cursor-pointer text-blue-500`}
+          onClick={handleLikePost}
+        />
+      )}
+      <span className="text-sm">{likesCount}</span>
     </div>
   );
 };
