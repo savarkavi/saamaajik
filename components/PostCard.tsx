@@ -19,7 +19,7 @@ type PostCardProps = {
   postId: string;
   userId: string;
   isComment: boolean;
-  likesCount: Number;
+  likesCount: number;
 };
 
 const PostCard = async ({
@@ -66,10 +66,10 @@ const PostCard = async ({
         <div className="flex items-center text-white gap-12 mt-6">
           <LikePost
             postId={postId}
-            userId={JSON.stringify(userInfo._id)}
+            userId={userInfo._id}
             likesCount={likesCount}
           />
-          <Link href={`/post/${JSON.parse(postId)}`}>
+          <Link href={`/post/${postId}`}>
             <AiOutlineMessage className="text-xl cursor-pointer" />
           </Link>
           <TiArrowForwardOutline className="text-xl cursor-pointer" />

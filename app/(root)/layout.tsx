@@ -8,6 +8,7 @@ import LeftSidebar from "@/components/LeftSidebar";
 import RightSidebar from "@/components/RightSidebar";
 import { Toaster } from "react-hot-toast";
 import { dark } from "@clerk/themes";
+import { LikesProvider } from "@/context/LikesContext";
 
 const inter = Inter({ subsets: ["latin"] });
 

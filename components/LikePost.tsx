@@ -1,7 +1,9 @@
 "use client";
 
+import { LikesContext } from "@/context/LikesContext";
 import { getLikesData, likePost } from "@/lib/controllers/like";
-import React, { useEffect, useState } from "react";
+import { fetchPosts } from "@/lib/controllers/post";
+import React, { useContext, useEffect, useState } from "react";
 import { IoMdHeartEmpty, IoMdHeart } from "react-icons/io";
 
 type LikesParams = {
@@ -21,31 +23,49 @@ const LikePost = ({
   const [isLiked, setIsLiked] = useState(false);
   const [likesData, setLikesData] = useState<LikesParams[]>([]);
 
+  const { likesState, setLikesState } = useContext(LikesContext);
+
   useEffect(() => {
     const fetchLikesData = async () => {
       const res = await getLikesData();
 
-      console.log(res);
-
       if (res && res?.length > 0) {
+        const isLiked = res.some((like) => {
+          return like.user === userId && like.post === postId;
+        });
+        console.log(res);
+        console.log(typeof userId, typeof postId);
+
         setLikesData(res);
+        setIsLiked(isLiked);
       }
     };
 
     fetchLikesData();
-  }, [postId]);
-
-  console.log(postId);
-
-  console.log(likesData.filter((like) => like.post !== postId));
+  }, [postId, userId]);
 
   const handleLikePost = async () => {
     const res = await likePost({
       userId: JSON.parse(userId),
       postId: JSON.parse(postId),
     });
-    console.log(res);
+
+    setIsLiked((prev) => !prev);
+
+    if (isLiked) {
+      setLikesState((prevLikesState) => ({
+        ...prevLikesState,
+        [postId]: prevLikesState[postId] - 1,
+      }));
+    } else {
+      setLikesState((prevLikesState) => ({
+        ...prevLikesState,
+        [postId]: prevLikesState[postId] + 1,
+      }));
+    }
   };
+  console.log(likesState);
+  // console.log(isLiked);
 
   return (
     <div className="flex items-center gap-2">
@@ -60,7 +80,7 @@ const LikePost = ({
           onClick={handleLikePost}
         />
       )}
-      <span className="text-sm">{likesCount}</span>
+      <span className="text-sm">{likesState[postId]}</span>
     </div>
   );
 };
