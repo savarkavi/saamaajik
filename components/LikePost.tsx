@@ -33,8 +33,6 @@ const LikePost = ({
         const isLiked = res.some((like) => {
           return like.user === userId && like.post === postId;
         });
-        console.log(res);
-        console.log(typeof userId, typeof postId);
 
         setLikesData(res);
         setIsLiked(isLiked);
@@ -46,8 +44,8 @@ const LikePost = ({
 
   const handleLikePost = async () => {
     const res = await likePost({
-      userId: JSON.parse(userId),
-      postId: JSON.parse(postId),
+      userId: userId,
+      postId: postId,
     });
 
     setIsLiked((prev) => !prev);
@@ -64,8 +62,6 @@ const LikePost = ({
       }));
     }
   };
-  console.log(likesState);
-  // console.log(isLiked);
 
   return (
     <div className="flex items-center gap-2">

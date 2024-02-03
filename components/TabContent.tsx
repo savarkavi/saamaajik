@@ -1,5 +1,6 @@
 import { fetchPostsByUser } from "@/lib/controllers/post";
 import PostCard from "./PostCard";
+import { LikesProvider } from "@/context/LikesContext";
 
 type TabProps = {
   userId: string;
@@ -11,36 +12,75 @@ const TabContent = async ({ userId, tabType }: TabProps) => {
     userId: userId,
   });
 
-  console.log(userPosts);
+  const userParentPosts = userPosts.filter((post: any) => !post.parent);
+  const userRepliesPosts = userPosts.filter((post: any) => post.parent);
+
+  console.log(userParentPosts);
+  console.log(userRepliesPosts);
+
+  // const userReplies = await fetchUserReplies(userId);
+  // console.log(userReplies);
+
+  const initialParentLikesState = {};
+  userParentPosts.forEach((post: any) => {
+    initialParentLikesState[post._id] = post.totalLikes;
+  });
+
+  const initialRepliesLikesState = {};
+  userRepliesPosts.forEach((post: any) => {
+    initialRepliesLikesState[post._id] = post.totalLikes;
+  });
 
   if (tabType === "posts") {
-    if (userPosts.length === 0)
+    if (userParentPosts.length === 0)
       return <div className="text-white text-2xl">No posts to show</div>;
+
     return (
-      <div className="flex flex-col gap-8">
-        {userPosts.map((post: any) => {
-          return (
-            <PostCard
-              key={post._id}
-              image={post.author.image}
-              username={post.author.username}
-              text={post.text}
-              postId={JSON.stringify(post._id)}
-              userId={post.author.id}
-              isComment={false}
-            />
-          );
-        })}
-      </div>
+      <LikesProvider initialLikesState={initialParentLikesState}>
+        <div className="flex flex-col gap-8">
+          {userParentPosts.map((post: any) => {
+            return (
+              <PostCard
+                key={post._id}
+                image={post.author.image}
+                username={post.author.username}
+                text={post.text}
+                postId={post._id}
+                userId={post.author.id}
+                isComment={false}
+                likesCount={post.totalLikes}
+              />
+            );
+          })}
+        </div>
+      </LikesProvider>
     );
   }
 
   if (tabType === "replies") {
-    return <div>replies</div>;
-  }
+    if (userRepliesPosts.length === 0)
+      return <div className="text-white text-2xl">No replies to show</div>;
 
-  if (tabType === "tagged") {
-    return <div>tagged</div>;
+    return (
+      <LikesProvider initialLikesState={initialRepliesLikesState}>
+        <div className="flex flex-col gap-8">
+          {userRepliesPosts.map((post: any) => {
+            return (
+              <PostCard
+                key={post._id}
+                image={post.author.image}
+                username={post.author.username}
+                text={post.text}
+                postId={post._id}
+                userId={post.author.id}
+                isComment={false}
+                likesCount={post.totalLikes}
+              />
+            );
+          })}
+        </div>
+      </LikesProvider>
+    );
   }
 };
 

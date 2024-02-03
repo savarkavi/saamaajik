@@ -20,7 +20,7 @@ export default async function Home() {
 
   return (
     <LikesProvider initialLikesState={initialLikesState}>
-      <div className="p-16">
+      <div className="px-4 py-8 md:p-16">
         <h1 className="text-2xl font-semibold mb-8 text-white">Home</h1>
         <div>
           {res.length === 0 ? (
@@ -38,6 +38,7 @@ export default async function Home() {
                     userId={post.author.id}
                     isComment={false}
                     likesCount={post.totalLikes}
+                    repliesCount={post.children?.length}
                   />
                 );
               })}

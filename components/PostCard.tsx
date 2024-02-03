@@ -7,11 +7,6 @@ import { currentUser } from "@clerk/nextjs";
 import LikePost from "./LikePost";
 import { fetchUser } from "@/lib/controllers/user";
 
-type Like = {
-  user: string;
-  post: string;
-};
-
 type PostCardProps = {
   image: string;
   username: string;
@@ -20,6 +15,7 @@ type PostCardProps = {
   userId: string;
   isComment: boolean;
   likesCount: number;
+  repliesCount: number;
 };
 
 const PostCard = async ({
@@ -30,6 +26,7 @@ const PostCard = async ({
   isComment,
   userId,
   likesCount,
+  repliesCount,
 }: PostCardProps) => {
   const user = await currentUser();
   if (!user) return null;
@@ -45,7 +42,7 @@ const PostCard = async ({
       <div className="flex flex-col items-center gap-2">
         <Link
           href={`/profile/${userId}`}
-          className="relative w-16 h-16 rounded-full shrink-0"
+          className="relative w-10 h-10 sm:w-16 sm:h-16 rounded-full shrink-0"
         >
           <Image
             src={image}
@@ -61,7 +58,7 @@ const PostCard = async ({
           <Link href={`/profile/${userId}`} className="text-sm font-semibold">
             {username}
           </Link>
-          <p>{text}</p>
+          <p className="text-sm sm:text-base">{text}</p>
         </div>
         <div className="flex items-center text-white gap-12 mt-6">
           <LikePost
@@ -69,11 +66,10 @@ const PostCard = async ({
             userId={userInfo._id}
             likesCount={likesCount}
           />
-          <Link href={`/post/${postId}`}>
+          <Link href={`/post/${postId}`} className="flex items-center gap-2">
             <AiOutlineMessage className="text-xl cursor-pointer" />
+            <span className="text-sm">{repliesCount}</span>
           </Link>
-          <TiArrowForwardOutline className="text-xl cursor-pointer" />
-          <CiLocationArrow1 className="text-xl cursor-pointer" />
         </div>
       </div>
     </div>

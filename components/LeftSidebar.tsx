@@ -23,7 +23,8 @@ const LeftSidebar = () => {
               }
               key={link.label}
               className={`text-white flex items-center gap-3 p-3 text-lg cursor-pointer hover:text-blue-700 transition-all ${
-                pathname.includes(`${link.route}`) &&
+                (pathname === link.route ||
+                  pathname.startsWith(link.route + "/")) &&
                 "bg-blue-500 rounded-lg hover:text-white"
               }`}
             >

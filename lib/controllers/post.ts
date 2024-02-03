@@ -1,5 +1,6 @@
 "use server";
 
+import Like from "../models/like";
 import Post from "../models/post";
 import User from "../models/user";
 import { connectDB } from "../mongoose";
@@ -13,11 +14,6 @@ type addCommentParams = {
   text: string;
   authorId: string;
   parentId: string;
-};
-
-type likePostParams = {
-  userId: string;
-  postId: string;
 };
 
 export const createPost = async ({ text, authorId }: createPostParams) => {
@@ -70,6 +66,19 @@ export const fetchPostsByUser = async ({ userId }: { userId: string }) => {
   }
 };
 
+// export const fetchUserReplies = async (userId: string) => {
+//   try {
+//     connectDB();
+
+//     const user = await Post.findOne({id: userId}).populate({
+//       path: "posts",
+//       populate: { path: "author" },
+//     });
+//   } catch (error: any) {
+//     throw new Error(error.message);
+//   }
+// };
+
 export const fetchPost = async (id: string) => {
   try {
     connectDB();
@@ -105,64 +114,28 @@ export const addComment = async ({
     }).save();
 
     parentPost.children.push(comment._id);
+    await User.findByIdAndUpdate(authorId, { $push: { posts: comment._id } });
     await parentPost.save();
   } catch (error: any) {
     throw new Error(error.message);
   }
 };
 
-// export const likePost = async ({ postId, userId }: likePostParams) => {
-//   try {
-//     connectDB();
-
-//     const post = await Post.findById(postId);
-
-//     if (
-//       post.likesData.map(
-//         (likeData: { user: string; postId: string }) => likeData.user === userId
-//       )
-//     ) {
-//       const updatedPost = await Post.findByIdAndUpdate(
-//         postId,
-//         { $pull: { likesData: { user: userId, post: postId } } },
-//         { new: true }
-//       );
-//       return updatedPost;
-//     } else {
-//       const updatedPost = await Post.findByIdAndUpdate(
-//         postId,
-//         { $push: { likesData: { user: userId, post: postId } } },
-//         { new: true }
-//       );
-//       return updatedPost;
-//     }
-//   } catch (error: any) {
-//     throw new Error(error.message);
-//   }
-// };
-
 export const fetchActivity = async (id: string) => {
   try {
     connectDB();
-    const userPosts = await Post.find({ author: id })
-      .populate({
-        path: "children",
-        populate: { path: "author" },
-      })
-      .populate({ path: "likesData" });
-
+    const userPosts = await Post.find({ author: id }).populate({
+      path: "children",
+      populate: { path: "author" },
+    });
     const commentsData = userPosts.flatMap((post) => post.children);
-    const likesData = userPosts.flatMap((post) => post.likes);
+    const postIds = userPosts.map((post) => post._id);
 
-    return { commentsData, likesData };
-  } catch (error: any) {
-    throw new Error(error.message);
-  }
-};
+    const likes = await Like.find({ post: { $in: postIds } })
+      .populate({ path: "user" })
+      .populate({ path: "post" });
 
-export const fetchLikesACtivity = async (id: string) => {
-  try {
-    connectDB();
+    return { commentsData, likes };
   } catch (error: any) {
     throw new Error(error.message);
   }

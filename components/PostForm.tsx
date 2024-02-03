@@ -31,9 +31,9 @@ const PostForm = ({ authorId }: { authorId: string }) => {
       authorId,
     });
 
-    values.post = "";
     toast.success("Posted!");
-    console.log(post);
+
+    form.reset();
   }
 
   return (
@@ -48,7 +48,7 @@ const PostForm = ({ authorId }: { authorId: string }) => {
             name="post"
             render={({ field }) => (
               <FormItem className="flex flex-col gap-2">
-                <FormLabel>content</FormLabel>
+                <FormLabel></FormLabel>
                 <FormControl>
                   <Textarea
                     className="w-full bg-stone-800 text-white"

@@ -13,7 +13,7 @@ const Search = async () => {
   const res = await fetchUsers();
 
   return (
-    <div className="p-16">
+    <div className="px-4 py-8 md:p-16">
       <h1 className="text-white text-2xl font-semibold mb-16">Search</h1>
       <div className="flex flex-col gap-10">
         {res.map((user) => {

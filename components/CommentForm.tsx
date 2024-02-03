@@ -38,8 +38,8 @@ const CommentForm = ({
   async function onSubmit(values: z.infer<typeof postValidation>) {
     await addComment({
       text: values.post,
-      authorId: JSON.parse(authorId),
-      parentId: JSON.parse(parentId),
+      authorId: authorId,
+      parentId: parentId,
     });
 
     values.post = "";
@@ -69,7 +69,7 @@ const CommentForm = ({
                   </div>
                 </FormLabel>
                 <FormControl>
-                  <Input
+                  <input
                     placeholder="Comment..."
                     className="w-full bg-transparent py-12 border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 rounded-none text-white"
                     {...field}
