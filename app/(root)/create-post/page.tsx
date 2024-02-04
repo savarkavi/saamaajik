@@ -12,7 +12,7 @@ async function CreatePost() {
 
   return (
     <div className="text-white px-4 py-8 md:p-16">
-      <h1 className="text-2xl font-semibold mb-8">Create Post</h1>
+      <h1 className="text-4xl font-semibold mb-8">Create Post</h1>
       <PostForm authorId={userInfo?._id} />
     </div>
   );

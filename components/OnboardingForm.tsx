@@ -4,6 +4,8 @@ import { userValidation } from "@/lib/zodSchemas/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { NextRequest, NextResponse } from "next/server";
+import { getAuth, clerkClient } from "@clerk/nextjs/server";
 
 import {
   Form,
@@ -56,7 +58,7 @@ const OnboardingForm = ({ user }: userProps) => {
       const imageUrl = await startUpload(files);
 
       if (imageUrl) {
-        values.profile_photo = imageUrl[0].url;
+        values.profile_photo = imageUrl[0]?.url;
       }
     }
 
@@ -68,7 +70,7 @@ const OnboardingForm = ({ user }: userProps) => {
       bio: values.bio,
     });
 
-    toast.success("Your profile has been created!");
+    toast.success("Your profile has been updated!");
     router.push("/");
   }
 

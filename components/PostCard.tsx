@@ -36,7 +36,7 @@ const PostCard = async ({
   return (
     <div
       className={`rounded-xl w-full max-w-[800px] flex gap-6 text-white ${
-        isComment ? "bg-transparent p-0 min-h-[180px]" : "p-4 bg-neutral-900"
+        isComment ? "bg-transparent p-0 min-h-[180px]" : "p-4 bg-[#111111]"
       }`}
     >
       <div className="flex flex-col items-center gap-2">

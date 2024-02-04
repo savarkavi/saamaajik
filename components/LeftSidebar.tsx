@@ -11,7 +11,7 @@ const LeftSidebar = () => {
   const { userId } = useAuth();
 
   return (
-    <div className="bg-neutral-900 sticky left-0 top-[80px] w-[250px] h-[calc(100vh-80px)] hidden md:flex flex-col px-8 py-4 justify-between">
+    <div className="bg-[#111111] sticky left-0 top-[80px] w-[350px] h-[calc(100vh-80px)] hidden md:flex flex-col px-8 py-4 justify-between">
       <div className="flex flex-col gap-8 mt-12">
         {sidebarLinks.map((link) => {
           return (

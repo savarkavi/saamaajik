@@ -49,6 +49,7 @@ const TabContent = async ({ userId, tabType }: TabProps) => {
                 userId={post.author.id}
                 isComment={false}
                 likesCount={post.totalLikes}
+                repliesCount={post.children?.length}
               />
             );
           })}
@@ -75,6 +76,7 @@ const TabContent = async ({ userId, tabType }: TabProps) => {
                 userId={post.author.id}
                 isComment={false}
                 likesCount={post.totalLikes}
+                repliesCount={post.children?.length}
               />
             );
           })}

@@ -18,7 +18,7 @@ const Post = async ({ params }: { params: { id: string } }) => {
   const profileImage = userInfo ? userInfo.image : user.imageUrl;
 
   const initialCommentsLikesState = {};
-  res.children.forEach((post) => {
+  res.children.forEach((post: any) => {
     initialCommentsLikesState[post._id] = post.totalLikes;
   });
 
@@ -34,6 +34,7 @@ const Post = async ({ params }: { params: { id: string } }) => {
             userId={res.author.id}
             isComment={false}
             likesCount={res.totalLikes}
+            repliesCount={res.children?.length}
           />
           <CommentForm
             profileImage={profileImage}
@@ -55,6 +56,7 @@ const Post = async ({ params }: { params: { id: string } }) => {
                 userId={comment.author.id}
                 isComment={true}
                 likesCount={comment.totalLikes}
+                repliesCount={comment.children?.length}
               />
             );
           })}
