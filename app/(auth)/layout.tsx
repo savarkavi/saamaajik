@@ -20,7 +20,9 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={inter.className}>
-          {children}
+          <div className="h-screen flex justify-center items-center">
+            {children}
+          </div>
           <Toaster />
         </body>
       </html>

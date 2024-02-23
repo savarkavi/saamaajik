@@ -1,35 +1,18 @@
-import UserCard from "@/components/UserCard";
+import SearchUsers from "@/components/SearchUsers";
 import { fetchUser, fetchUsers } from "@/lib/controllers/user";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
 const Search = async () => {
   const user = await currentUser();
+  const initialUsers = await fetchUsers();
+
   if (!user) return null;
 
   const userInfo = await fetchUser(user.id);
   if (!userInfo?.isBoarded) redirect("/onboarding");
 
-  const res = await fetchUsers();
-
-  return (
-    <div className="px-4 py-8 md:p-16">
-      <h1 className="text-white text-2xl font-semibold mb-16">Search</h1>
-      <div className="flex flex-col gap-10">
-        {res.map((user) => {
-          return (
-            <UserCard
-              key={user._id}
-              image={user.image}
-              name={user.name}
-              username={user.username}
-              userId={user.id}
-            />
-          );
-        })}
-      </div>
-    </div>
-  );
+  return <SearchUsers initialUsers={initialUsers} />;
 };
 
 export default Search;
