@@ -26,7 +26,7 @@ const NewUserCard = ({ image, name, username, userId }: NewUserCardProps) => {
         </div>
       </div>
       <Link
-        href={`profile/${userId}`}
+        href={`/profile/${userId}`}
         className="bg-blue-500 py-2 px-4 rounded-xl text-white text-sm"
       >
         View

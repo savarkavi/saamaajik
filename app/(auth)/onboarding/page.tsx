@@ -17,7 +17,7 @@ async function Onboarding() {
   };
 
   return (
-    <div className="bg-black h-screen flex justify-center items-center">
+    <div className="bg-black w-full h-screen flex justify-center items-center">
       <div className="flex flex-col gap-6 w-full max-w-[500px] mx-auto">
         <div className="flex flex-col gap-3 text-white">
           <h1 className="text-4xl font-semibold">Onboarding</h1>

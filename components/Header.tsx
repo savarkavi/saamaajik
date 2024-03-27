@@ -11,6 +11,10 @@ export default async function Header() {
 
   const userInfo = await fetchUser(user.id);
 
+  if (!userInfo) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="w-full bg-[#111111] h-[80px] py-4 px-2 sm:px-8 flex items-center justify-between sticky top-0 z-[99]">
       <Link href="/" className="flex items-center gap-4 justify-between">
