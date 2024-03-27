@@ -13,8 +13,8 @@ export default async function Home() {
   const userInfo = await fetchUser(user.id);
   if (!userInfo?.isBoarded) redirect("/onboarding");
 
-  const initialLikesState = {};
-  res.forEach((post) => {
+  const initialLikesState: Record<string, number> = {};
+  res.forEach((post: any) => {
     initialLikesState[post._id] = post.totalLikes;
   });
 
