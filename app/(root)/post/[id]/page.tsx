@@ -6,6 +6,28 @@ import { fetchUser } from "@/lib/controllers/user";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
+interface Post {
+  _id: string;
+  totalLikes: number;
+  text: string;
+  author: {
+    _id: string;
+    id: string;
+    name: string;
+    username: string;
+    image: string;
+    bio: string;
+    isBoarded: boolean;
+    posts: string[];
+    communities: string[];
+    createdAt: string;
+    updatedAt: string;
+  };
+  children: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
 const Post = async ({ params }: { params: { id: string } }) => {
   const user = await currentUser();
   if (!user) return null;
@@ -17,7 +39,7 @@ const Post = async ({ params }: { params: { id: string } }) => {
   const replies = res.children.reverse();
   const profileImage = userInfo ? userInfo.image : user.imageUrl;
 
-  const initialCommentsLikesState: any = {};
+  const initialCommentsLikesState: Record<string, number> = {};
   res.children.forEach((post: any) => {
     initialCommentsLikesState[post._id] = post.totalLikes;
   });
