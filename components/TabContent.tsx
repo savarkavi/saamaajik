@@ -21,12 +21,12 @@ const TabContent = async ({ userId, tabType }: TabProps) => {
   // const userReplies = await fetchUserReplies(userId);
   // console.log(userReplies);
 
-  const initialParentLikesState = {};
+  const initialParentLikesState: Record<string, number> = {};
   userParentPosts.forEach((post: any) => {
     initialParentLikesState[post._id] = post.totalLikes;
   });
 
-  const initialRepliesLikesState = {};
+  const initialRepliesLikesState: Record<string, number> = {};
   userRepliesPosts.forEach((post: any) => {
     initialRepliesLikesState[post._id] = post.totalLikes;
   });
