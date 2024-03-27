@@ -9,7 +9,7 @@ const SearchUsers = ({ initialUsers }: any) => {
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
-    const filtered = initialUsers.filter((user) =>
+    const filtered = initialUsers.filter((user: any) =>
       user.username.toLowerCase().includes(query.toLowerCase())
     );
     setFilteredUsers(filtered);
@@ -30,7 +30,7 @@ const SearchUsers = ({ initialUsers }: any) => {
         </form>
       </div>
       <div className="flex flex-col gap-10">
-        {filteredUsers.map((user) => {
+        {filteredUsers.map((user: any) => {
           return (
             <UserCard
               key={user._id}

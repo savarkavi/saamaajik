@@ -17,7 +17,7 @@ const Post = async ({ params }: { params: { id: string } }) => {
   const replies = res.children.reverse();
   const profileImage = userInfo ? userInfo.image : user.imageUrl;
 
-  const initialCommentsLikesState = {};
+  const initialCommentsLikesState: any = {};
   res.children.forEach((post: any) => {
     initialCommentsLikesState[post._id] = post.totalLikes;
   });
